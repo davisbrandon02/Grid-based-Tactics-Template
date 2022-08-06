@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Pathfinding",
 "language": "GDScript",
 "path": "res://Pathfinding.gd"
+}, {
+"base": "Area2D",
+"class": "Unit",
+"language": "GDScript",
+"path": "res://Unit.gd"
 } ]
 _global_script_class_icons={
-"Pathfinding": ""
+"Pathfinding": "",
+"Unit": ""
 }
 
 [application]

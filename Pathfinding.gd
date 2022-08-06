@@ -1,9 +1,12 @@
 extends Node2D
 class_name Pathfinding
 
+signal pathfinding_initialized
+
 onready var board = get_parent()
 var astar = AStar2D.new()
 var obstacle_array = Array()
+var active_unit = null setget set_active_unit
 
 var path: PoolVector2Array
 
@@ -13,6 +16,8 @@ var moving = false
 func initialize_pathfinding():
 	_add_points(board.tile_array)
 	_connect_points(board.tile_array)
+	connect("pathfinding_initialized", get_parent().get_node("Unit"), "initialize")
+	emit_signal("pathfinding_initialized")
 
 func _add_points(_points: Array):
 	for _point in _points:
@@ -46,7 +51,7 @@ func get_points_in_range(start_tile, range_param):
 	var points_in_range = Array()
 	for _tile in board.tile_array:
 		if _tile.obstacle == false:
-			_tile.get_node("Sprite").modulate = Color.black
+			_tile.get_node("Sprite").modulate = Color.transparent
 			if _tile != start_tile:
 				var tile_distance = get_distance(start_tile, _tile)
 				if tile_distance <= range_param:
@@ -57,3 +62,6 @@ func get_points_in_range(start_tile, range_param):
 func set_start_tile(_tile):
 	start_tile = _tile
 	get_points_in_range(_tile, 3)
+
+func set_active_unit(_unit):
+	pass
