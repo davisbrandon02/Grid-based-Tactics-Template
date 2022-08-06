@@ -14,7 +14,7 @@ Features:
 
 Planned features:
 - Unit movement and attack system.
-- Turn queue system that can support any number of sides. Example: XCOM turn, Alien turn, civilian turn, lost turn
+- Turn queue system that can support any number of sides. Example: XCOM turn, Alien turn, civilian turn, Lost turn
 - Customizable units. Example: default unit  can be made into rifleman units, or units with their own levels and XP like in Fire Emblem.
 - Line of sight calculation
 - Simple example game with YouTube series tutorial on how to use the template
