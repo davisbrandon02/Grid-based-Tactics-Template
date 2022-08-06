@@ -17,4 +17,6 @@ Planned features:
 - Turn queue system that can support any number of sides. Example: XCOM turn, Alien turn, civilian turn, Lost turn
 - Customizable units. Example: default unit  can be made into rifleman units, or units with their own levels and XP like in Fire Emblem.
 - Line of sight calculation
+- Easy integration within games. To create an instance of this tactical combat, the developer should only need to give the units
+  involved and a map type with spawn locations. Any other data is optional
 - Simple example game with YouTube series tutorial on how to use the template
