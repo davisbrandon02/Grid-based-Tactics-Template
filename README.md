@@ -13,7 +13,8 @@ Features:
 - Built in AStar pathfinding and range calculation. Easily check movement range, attack range, influence range, etc.
 
 Planned features:
-- Easily customizable units that can spawn from set "spawn" locations on the tilemap, and can be easily changed. Example: default unit
-  can be made into rifleman units, or units with their own levels and XP like in Fire Emblem.
+- Unit movement and attack system.
+- Turn queue system that can support any number of sides. Example: XCOM turn, Alien turn, civilian turn, lost turn
+- Customizable units. Example: default unit  can be made into rifleman units, or units with their own levels and XP like in Fire Emblem.
 - Line of sight calculation
 - Simple example game with YouTube series tutorial on how to use the template
