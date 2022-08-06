@@ -4,6 +4,8 @@ This is a simple template to create turn-based tactics games such as XCOM or Fir
 a fun side project to get more used to AStar pathfinding and creating grids for games in general.
 
 Features:
+- Grid system with game object tiles that can store whatever data is needed, such as fortification level, levels of cover from each
+  direction, owner, amount of resource gained per turn, etc.
 - Automatic tilemap to grid conversion: easily create maps using the built in tilemap node and the Board node will
   automatically create a game board of Tile objects with whatever data you would like to include. For example, you
   could place down a plains tile with no data that can be traversed, a mountain that cannot be moved onto, or a
@@ -13,7 +15,5 @@ Features:
 Planned features:
 - Easily customizable units that can spawn from set "spawn" locations on the tilemap, and can be easily changed. Example: default unit
   can be made into rifleman units, or units with their own levels and XP like in Fire Emblem.
-- Tiles will be able to hold whatever data you see fit, such as fortification level, levels of cover from each
-  direction, owner, amount of resource gained per turn, etc.
 - Line of sight calculation
 - Simple example game with YouTube series tutorial on how to use the template
