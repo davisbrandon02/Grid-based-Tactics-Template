@@ -16,7 +16,8 @@ var moving = false
 func initialize_pathfinding():
 	_add_points(board.tile_array)
 	_connect_points(board.tile_array)
-	connect("pathfinding_initialized", get_parent().get_node("Unit"), "initialize")
+	for child in get_parent().get_node("Units").get_children():
+		connect("pathfinding_initialized", child, "initialize")
 	emit_signal("pathfinding_initialized")
 
 func _add_points(_points: Array):

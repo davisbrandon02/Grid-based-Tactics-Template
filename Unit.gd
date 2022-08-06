@@ -6,9 +6,9 @@ var avail_tiles = Array()
 var selected: bool = false
 var tile = null
 
-onready var board = get_parent()
-onready var turnManager = get_parent().get_node("TurnManager")
-onready var pathfinding = get_parent().get_node("Pathfinding")
+onready var board = get_parent().get_parent()
+onready var turnManager = get_parent().get_parent().get_node("TurnManager")
+onready var pathfinding = get_parent().get_parent().get_node("Pathfinding")
 
 func initialize():
 	var grid_pos = board.world_to_grid(position)

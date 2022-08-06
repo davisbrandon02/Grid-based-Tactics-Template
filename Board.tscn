@@ -43,7 +43,6 @@ script = ExtResource( 1 )
 tile_size = 32
 
 [node name="MapMaker" type="TileMap" parent="."]
-visible = false
 tile_set = SubResource( 1 )
 cell_size = Vector2( 32, 32 )
 format = 1
@@ -55,8 +54,13 @@ script = ExtResource( 7 )
 
 [node name="Tiles" type="Node2D" parent="."]
 
-[node name="Unit" parent="." instance=ExtResource( 6 )]
+[node name="Units" type="Node2D" parent="."]
+
+[node name="Unit" parent="Units" instance=ExtResource( 6 )]
 position = Vector2( 179, 179 )
+
+[node name="Unit2" parent="Units" instance=ExtResource( 6 )]
+position = Vector2( 413, 182 )
 
 [node name="Pathfinding" type="Node2D" parent="."]
 script = ExtResource( 4 )
