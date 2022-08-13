@@ -65,4 +65,4 @@ func set_start_tile(_tile):
 	get_points_in_range(_tile, 3)
 
 func set_active_unit(_unit):
-	pass
+	active_unit = _unit

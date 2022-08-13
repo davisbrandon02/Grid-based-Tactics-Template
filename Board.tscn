@@ -43,6 +43,7 @@ script = ExtResource( 1 )
 tile_size = 32
 
 [node name="MapMaker" type="TileMap" parent="."]
+visible = false
 tile_set = SubResource( 1 )
 cell_size = Vector2( 32, 32 )
 format = 1

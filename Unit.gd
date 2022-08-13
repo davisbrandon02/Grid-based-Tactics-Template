@@ -5,6 +5,7 @@ var move_range: int = 5
 var avail_tiles = Array()
 var selected: bool = false
 var tile = null
+var side = 0
 
 onready var board = get_parent().get_parent()
 onready var turnManager = get_parent().get_parent().get_node("TurnManager")
