@@ -14,6 +14,7 @@ Features:
 - Built in line of sight calculation
 
 Planned features:
+- Basic GUI, easily customizable and can be edited to show any data required
 - Two different advanced attacking systems: either percentage hit chance system (XCOM) or damage calculation based on terrain/stats (Advance Wars)
 - Turn queue system that can support any number of sides. Example: XCOM turn, Alien turn, civilian turn, Lost turn (In progress)
 - Customizable units. Example: default unit  can be made into rifleman units, or units with their own levels and XP like in Fire Emblem.
