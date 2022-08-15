@@ -12,5 +12,6 @@ func set_tile_info():
 				_tile.obstacle = false
 			1:
 				_tile.obstacle = true
+				_tile.blocks_LOS = true
 				pathfinding.obstacle_array.append(_tile)
-				_tile.get_node("Sprite").modulate = Color.red
+				_tile.get_node("Sprite").modulate = Color.black

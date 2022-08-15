@@ -1,16 +1,26 @@
 extends Area2D
 class_name Unit
 
+var hp: int = 10
 var move_range: int = 5
-var avail_tiles = Array()
+var attack_range: int = 5
+var attack_damage: int = 3
+var LOS_range: int = 10
+var can_move: bool = true
+var can_attack: bool = true
+
+var attackable: bool = false setget set_attackable
+
 var selected: bool = false
 var tile = null
-var side = 0
+
+export var side: int = 0
 
 onready var board = get_parent().get_parent()
 onready var turnManager = get_parent().get_parent().get_node("TurnManager")
 onready var pathfinding = get_parent().get_parent().get_node("Pathfinding")
 
+# Sets the shape of the clickbox and fixes it to the tile.
 func initialize():
 	var grid_pos = board.world_to_grid(position)
 	$CollisionShape2D.shape.extents = Vector2(board.half_tile_size, board.half_tile_size)
@@ -28,27 +38,130 @@ func set_tile(_tile):
 func set_selected(value):
 	selected = value
 	if selected:
-		$Sprite.modulate = Color.yellow
+		$AnimationPlayer.play("selected")
 		pathfinding.start_tile = tile
-		set_available_tiles(move_range)
-	else: $Sprite.modulate = Color.white
+#		set_LOS_tiles()
+		if can_move:
+			set_walkable_tiles()
+		if can_attack:
+			set_attackable_tiles()
+	else:
+		set_walkable_tiles()
+		set_attackable_tiles()
+		$AnimationPlayer.play("ready")
 
 # On click
 func _on_Unit_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == BUTTON_LEFT:
-			turnManager.set_selected_unit(self)
-			pathfinding.set_active_unit(self)
+			if turnManager.player_side == side:
+				turnManager.set_selected_unit(self)
+
+# Ends this unit's turn
+func end_turn():
+	print("%s ends turn" % self.name)
+	if turnManager.player_side == side:
+		turnManager.set_selected_unit(null)
+	else:
+		turnManager.next_unit()
 
 # Function used to actually move the unit.
 func move(_path):
-	var _tile = board.get_tile_at(_path[-1])
-	set_tile(_tile)
-	set_available_tiles(0)
+	if _path.size() > 0:
+		can_move = false
+		set_walkable_tiles()
+		var _tile = board.get_tile_at(_path[-1])
+		for pathTileGridPos in _path:
+			var pathTile = board.get_tile_at(pathTileGridPos)
+			var timer = Timer.new()
+			timer.wait_time = 0.1
+			timer.one_shot
+			add_child(timer)
+			timer.start()
+			yield(timer, "timeout")
+			timer.queue_free()
+			set_tile(pathTile)
+		set_tile(_tile)
+		set_attackable_tiles()
+		if get_attackable_units().size() < 1:
+			end_turn()
 
-# Sets tiles as available within a certain range from this unit.
-func set_available_tiles(_range):
+# Gets a path to the point and moves the unit there.
+func move_to(_tile):
+	var _path = pathfinding._get_path(pathfinding.start_tile, _tile)
+	move(_path)
+
+# Function used to make this unit attack another.
+# Where the fork in this template happens: either a hit chance or a damage calculation.
+# This branch will use a damage calculation, often used in wargames.
+# Always ends turn.
+# TODO: Armor and piercing mechanic. #
+func attack(_target):
+	_target.damage(attack_damage)
+	can_attack = false
+	end_turn()
+	print("%s attacks %s for %s damage" % [self.name, _target.name, str(attack_damage)])
+
+# Damages this unit with the specific amount of attack damage.
+# TODO: Armor and piercing mechanic. #
+func damage(_amount):
+	hp -= _amount
+	$AnimationPlayer.play("hurt")
+	print("%s takes %s damage. HP is now %s" % [self.name, str(_amount), str(hp)])
+
+# Gets the tiles within move range of this unit.
+func get_walkable_tiles():
+	return pathfinding.get_points_in_range(tile, move_range)
+
+# Gets all tiles within attack range. Have to add LOS check once LOS is implemented.
+func get_attackable_tiles():
+	return pathfinding.get_points_in_range(tile, attack_range)
+
+# Gets all tiles within LOS.
+func get_LOS_tiles():
+	var _LOS_range_tiles = pathfinding.get_points_in_range(tile, LOS_range)
+	var output:= []
+	for _tile in _LOS_range_tiles:
+		var line = board.get_tiles_between(tile, _tile)
+		if board.has_LOS(line):
+			output.append(_tile)
+	return output
+
+# Sets all tiles visible to this unit as within LOS.
+func set_LOS_tiles():
+	for _tile in get_LOS_tiles():
+		if _tile.obstacle == false and _tile.blocks_LOS == false and _tile.unit == null:
+			_tile.set_in_LOS(true)
+
+# Gets attackable units in attack range.
+func get_attackable_units():
+	var output:= []
+	var LOS_tiles = get_LOS_tiles()
+	for _tile in get_attackable_tiles():
+		if _tile.unit != null:
+			output.append(_tile.unit)
+	return output
+
+# Sets the tiles within move range of this unit as walkable.
+func set_walkable_tiles():
 	for _tile in board.tile_array:
-		_tile.set_available(false)
-	for _tile in pathfinding.get_points_in_range(tile, _range):
-		_tile.set_available(true)
+		_tile.set_walkable(false)
+	if can_move:
+		for _tile in get_walkable_tiles():
+			_tile.set_walkable(true)
+
+# Sets tiles within attack range as attackable.
+func set_attackable_tiles():
+	var LOS = get_LOS_tiles()
+	for _tile in board.tile_array:
+		_tile.set_attackable(false)
+	if can_attack:
+		for _tile in get_attackable_tiles():
+			if _tile.unit != null and _tile in LOS:
+				_tile.set_attackable(true)
+
+# Sets this unit as attackable by whichever unit is selected.
+func set_attackable(value: bool):
+	attackable = value
+	if attackable: $Sprite.modulate = Color.red
+	else: $Sprite.modulate = Color.white

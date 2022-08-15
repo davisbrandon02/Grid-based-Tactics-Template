@@ -62,9 +62,21 @@ position = Vector2( 179, 179 )
 
 [node name="Unit2" parent="Units" instance=ExtResource( 6 )]
 position = Vector2( 413, 182 )
+side = 1
+
+[node name="Unit3" parent="Units" instance=ExtResource( 6 )]
+position = Vector2( 342, 278 )
+side = 1
 
 [node name="Pathfinding" type="Node2D" parent="."]
 script = ExtResource( 4 )
 
 [node name="Line2D" type="Line2D" parent="Pathfinding"]
 width = 5.0
+
+[node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="GUI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
