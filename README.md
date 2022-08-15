@@ -10,14 +10,14 @@ Features:
   automatically create a game board of Tile objects with whatever data you would like to include. For example, you
   could place down a plains tile with no data that can be traversed, a mountain that cannot be moved onto, or a
   forest that offers a certain amount of defense against attacks.
-- Base unit node with grid-based pathfinding and movement.
+- Base unit node with grid-based pathfinding and movement
+- Unit attack system taking into account stats of each unit and the tile they're standing on
 - Built in AStar pathfinding and range calculation. Easily check movement range, attack range, influence range, etc.
+- Built in line of sight calculation
 
 Planned features:
-- Unit attack system.
-- Turn queue system that can support any number of sides. Example: XCOM turn, Alien turn, civilian turn, Lost turn
+- Turn queue system that can support any number of sides. Example: XCOM turn, Alien turn, civilian turn, Lost turn (In progress)
 - Customizable units. Example: default unit  can be made into rifleman units, or units with their own levels and XP like in Fire Emblem.
-- Line of sight calculation
 - Easy integration within already created games or within games' strategic layers. To create an instance of this tactical combat, the
   developer should only need to give the units involved and a valid map.
 - Simple example game with YouTube series tutorial on how to use the template
