@@ -1,30 +1,32 @@
 extends Area2D
 class_name Unit
 
+export var data: Resource = load("res://resource/unit/TestUnit.tres")
+
+# Local variables for a unit, can change
 var hp: int = 10
-var move_range: int = 5
-var attack_range: int = 5
-var attack_damage: int = 3
-var LOS_range: int = 10
+
+# Turn variables
 var can_move: bool = true
 var can_attack: bool = true
+var selected: bool = false
+export var side: int = 0
 
 var attackable: bool = false setget set_attackable
-
-var selected: bool = false
 var tile = null
-
-export var side: int = 0
 
 onready var board = get_parent().get_parent()
 onready var turnManager = get_parent().get_parent().get_node("TurnManager")
 onready var pathfinding = get_parent().get_parent().get_node("Pathfinding")
 
-# Sets the shape of the clickbox and fixes it to the tile.
+# Sets the shape of the clickbox and fixes it to the tile and sets unit variables.
 func initialize():
 	var grid_pos = board.world_to_grid(position)
 	$CollisionShape2D.shape.extents = Vector2(board.half_tile_size, board.half_tile_size)
 	set_tile(board.get_tile_at(grid_pos))
+	
+	# Set unit variables
+	hp = data.base_hp
 
 # Sets the tile that this unit is on.
 func set_tile(_tile):
@@ -95,15 +97,13 @@ func move_to(_tile):
 # Where the fork in this template happens: either a hit chance or a damage calculation.
 # This branch will use a damage calculation, often used in wargames.
 # Always ends turn.
-# TODO: Armor and piercing mechanic. #
 func attack(_target):
-	_target.damage(attack_damage)
+	_target.damage(data.attack_damage)
 	can_attack = false
 	end_turn()
-	print("%s attacks %s for %s damage" % [self.name, _target.name, str(attack_damage)])
+	print("%s attacks %s for %s damage" % [self.name, _target.name, str(data.attack_damage)])
 
 # Damages this unit with the specific amount of attack damage.
-# TODO: Armor and piercing mechanic. #
 func damage(_amount):
 	hp -= _amount
 	$AnimationPlayer.play("hurt")
@@ -111,15 +111,15 @@ func damage(_amount):
 
 # Gets the tiles within move range of this unit.
 func get_walkable_tiles():
-	return pathfinding.get_points_in_range(tile, move_range)
+	return pathfinding.get_points_in_range(tile, data.move_range)
 
 # Gets all tiles within attack range. Have to add LOS check once LOS is implemented.
 func get_attackable_tiles():
-	return pathfinding.get_points_in_range(tile, attack_range)
+	return pathfinding.get_points_in_range(tile, data.attack_range)
 
 # Gets all tiles within LOS.
 func get_LOS_tiles():
-	var _LOS_range_tiles = pathfinding.get_points_in_range(tile, LOS_range)
+	var _LOS_range_tiles = pathfinding.get_points_in_range(tile, data.LOS_range)
 	var output:= []
 	for _tile in _LOS_range_tiles:
 		var line = board.get_tiles_between(tile, _tile)

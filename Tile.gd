@@ -44,17 +44,6 @@ func _on_Tile_input_event(viewport, event, shape_idx):
 				turnManager.selected_unit.attack(unit)
 			elif walkable:
 				turnManager.selected_unit.move_to(self)
-		
-#		# debug grid raycast
-#		elif event.button_index == BUTTON_RIGHT:
-#			if board.los_tile == null:
-#				board.los_tile = self
-#				$Sprite.modulate = Color.purple
-#			else:
-#				var tiles = board.get_tiles_between(board.los_tile, self)
-#				for _tile in tiles:
-#					print(_tile.grid_pos)
-#					_tile.get_node("Sprite").modulate = Color.aqua
 
 # Sets whether or not this tile is walkable by whichever tile is selected.
 func set_walkable(value: bool):
